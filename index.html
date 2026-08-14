@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plan 30 Días AI UGC - Principiante</title>
+  <style>
+    :root {
+      --canvas: #08090a;
+      --graphite: #0f1011;
+      --slate: #161718;
+      --charcoal: #23252a;
+      --line: #34343a;
+      --ash: #2d2e31;
+      --text: #f7f8f8;
+      --text-2: #d0d6e0;
+      --muted: #8a8f98;
+      --fog: #62666d;
+      --lime: #e4f222;
+      --lime-dim: #c4d11a;
+      --danger: #eb5757;
+      --radius-card: 8px;
+      --radius-pill: 9999px;
+      --font: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --mono: ui-monospace, "SF Mono", "Cascadia Code", "IBM Plex Mono", Menlo, Consolas, monospace;
+      --max: 760px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      min-height: 100vh;
+    }
+
+    button, textarea, input { font-family: inherit; }
+
+    .wrap {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(8, 9, 10, 0.84);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 52px;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .brand-mark {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      background: var(--lime);
+      flex-shrink: 0;
+    }
+    .brand span {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .top-progress {
+      font-variant-numeric: tabular-nums;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    header.hero {
+      padding: 48px 0 28px;
+    }
+    .kicker {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      margin: 0 0 16px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+    }
+    .lede {
+      margin: 0;
+      max-width: 58ch;
+      color: var(--text-2);
+      font-size: 16px;
+      line-height: 1.55;
+      text-wrap: pretty;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0 0;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 12px;
+      border-radius: var(--radius-pill);
+      background: var(--graphite);
+      border: 1px solid var(--line);
+      color: var(--text-2);
+      font-size: 12px;
+    }
+
+    .master-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 28px 0 8px;
+    }
+    .btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 44px;
+      padding: 0 20px;
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    }
+    .btn:focus-visible {
+      outline: 2px solid var(--lime);
+      outline-offset: 3px;
+    }
+    .btn-lime {
+      background: var(--lime);
+      color: var(--canvas);
+      width: 100%;
+      height: 52px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .btn-lime:hover { background: var(--lime-dim); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--text);
+    }
+    .btn-ghost:hover { background: var(--slate); }
+    .btn-muted {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      height: 32px;
+      font-size: 12px;
+      padding: 0 12px;
+    }
+    .btn-muted:hover {
+      color: var(--text-2);
+      border-color: var(--muted);
+    }
+    .btn-block { width: 100%; }
+
+    .backup-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .backup-row .btn { width: 100%; }
+
+    .copy-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .copy-option {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .copy-hint {
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .btn-ghost.btn-tall {
+      width: 100%;
+      height: 52px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .how {
+      margin: 20px 0 0;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      background: var(--graphite);
+    }
+    .how h2 {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .how ol {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text-2);
+      font-size: 14px;
+    }
+    .how li { margin: 6px 0; }
+
+    .progress-card {
+      margin: 28px 0;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+    }
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .progress-head strong {
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .progress-head span {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .bar {
+      height: 6px;
+      background: var(--charcoal);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+    .bar > i {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: var(--lime);
+      border-radius: inherit;
+      transition: width 0.25s ease;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0 0 20px;
+    }
+    .filter {
+      height: 32px;
+      padding: 0 12px;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .filter:hover { color: var(--text-2); }
+    .filter[aria-pressed="true"] {
+      background: var(--slate);
+      color: var(--text);
+      border-color: var(--line);
+    }
+    .filter:focus-visible {
+      outline: 2px solid var(--lime);
+      outline-offset: 2px;
+    }
+
+    .week-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 28px 0 10px;
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+    .week-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    .day {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      background: transparent;
+      margin: 0 0 8px;
+      overflow: hidden;
+    }
+    .day[open] { background: var(--graphite); }
+    .day summary {
+      list-style: none;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 22px 20px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px 10px;
+      padding: 14px 14px;
+      user-select: none;
+    }
+    .day summary::-webkit-details-marker { display: none; }
+    .day summary:hover { background: rgba(255,255,255,0.015); }
+    .day summary:focus-visible {
+      outline: 2px solid var(--lime);
+      outline-offset: -2px;
+    }
+
+    .check {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1px solid var(--line);
+      background: transparent;
+      display: grid;
+      place-items: center;
+      padding: 0;
+      cursor: pointer;
+      color: var(--canvas);
+      flex-shrink: 0;
+    }
+    .check[aria-pressed="true"] {
+      background: var(--lime);
+      border-color: var(--lime);
+    }
+    .check svg { display: none; }
+    .check[aria-pressed="true"] svg { display: block; }
+
+    .brain {
+      width: 18px;
+      height: 18px;
+      display: block;
+      color: #3d3e44;
+      pointer-events: none;
+      flex-shrink: 0;
+    }
+    .brain-wrap {
+      display: grid;
+      place-items: center;
+      width: 20px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+    .brain.has-memory {
+      color: var(--lime);
+      filter: drop-shadow(0 0 5px rgba(228, 242, 34, 0.55));
+    }
+
+    .day-num {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--fog);
+      margin-right: 8px;
+    }
+    .day-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.35;
+    }
+    .day-title .day-num { display: inline; }
+    .chev {
+      width: 16px;
+      height: 16px;
+      color: var(--muted);
+      transition: transform 0.18s ease;
+    }
+    .day[open] .chev { transform: rotate(180deg); }
+
+    .panel {
+      padding: 0 16px 18px 76px;
+      border-top: 1px solid var(--charcoal);
+    }
+    .goal {
+      margin: 14px 0 16px;
+      color: var(--text-2);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 62ch;
+    }
+    .notes-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin: 16px 0 8px;
+    }
+    .notes-label span {
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .notes-label small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      resize: vertical;
+      background: var(--canvas);
+      color: var(--text);
+      border: 1px solid var(--charcoal);
+      border-radius: 6px;
+      padding: 12px 14px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    textarea::placeholder { color: var(--fog); }
+    textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 1px #3e3e44;
+    }
+    .notes-actions { margin-top: 8px; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(12px);
+      background: var(--lime);
+      color: var(--canvas);
+      padding: 10px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 40;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    footer {
+      padding: 40px 0 64px;
+      color: var(--fog);
+      font-size: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .wrap { width: min(var(--max), calc(100% - 24px)); }
+      header.hero { padding-top: 32px; }
+      .day summary {
+        grid-template-columns: 22px 20px minmax(0, 1fr) auto;
+        padding: 12px;
+      }
+      .panel { padding: 0 12px 16px 12px; }
+      .day-title { font-size: 13.5px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="wrap topbar-inner">
+      <div class="brand">
+        <i class="brand-mark" aria-hidden="true"></i>
+        <span>Plan 30 Días AI UGC</span>
+      </div>
+      <div class="top-progress" id="topProgress">0 / 30</div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header class="hero">
+      <p class="kicker">Sistema de 30 días · ~3 h/día · techo 500</p>
+      <h1>Plan 30 Días AI UGC - Principiante</h1>
+      <p class="lede">Un sistema para principiantes absolutos: aprende AI UGC, monta afiliados y publica con un agente de IA que te guía paso a paso. Cada día se copia, se pega en Grok o Claude, y se trabaja. Nada se da por sabido.</p>
+      <div class="chips">
+        <span class="chip">Principiante total</span>
+        <span class="chip">AI UGC + afiliados</span>
+        <span class="chip">Notas en este navegador</span>
+      </div>
+    </header>
+
+    <div class="master-row">
+      <button type="button" class="btn btn-ghost btn-block" id="copyMaster">Copiar Prompt Maestro</button>
+      <div class="backup-row">
+        <button type="button" class="btn btn-muted" id="exportData">Exportar notas</button>
+        <button type="button" class="btn btn-muted" id="importData">Importar notas</button>
+      </div>
+      <input type="file" id="importFile" accept="application/json,.json" hidden />
+    </div>
+
+    <section class="how">
+      <h2>Cómo se usa</h2>
+      <ol>
+        <li>Copia el Prompt Maestro una vez al abrir un chat nuevo.</li>
+        <li>Si sigues en el mismo agente, usa <strong>Copiar para el mismo agente</strong>: no lleva recap; él ya tiene el contexto.</li>
+        <li>Si se acaba la memoria, usa <strong>Copiar para un agente nuevo</strong> (inyecta las notas) y pégalo en otro chat.</li>
+        <li>Al terminar, pega el resumen en Notas y marca el día. El cerebro se ilumina si hay memoria.</li>
+        <li>Para pasar de un navegador a otro (móvil), usa <strong>Exportar notas</strong> aquí y <strong>Importar notas</strong> en el otro.</li>
+      </ol>
+    </section>
+
+    <section class="progress-card">
+      <div class="progress-head">
+        <strong id="progressLabel">0 de 30 días completados</strong>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="bar" aria-hidden="true"><i id="progressBar"></i></div>
+    </section>
+
+    <div class="filters" role="tablist" aria-label="Filtrar por semana">
+      <button type="button" class="filter" data-week="all" aria-pressed="true">Todos</button>
+      <button type="button" class="filter" data-week="1" aria-pressed="false">1-7 Fundación</button>
+      <button type="button" class="filter" data-week="2" aria-pressed="false">8-14 Publicar</button>
+      <button type="button" class="filter" data-week="3" aria-pressed="false">15-21 Volumen</button>
+      <button type="button" class="filter" data-week="4" aria-pressed="false">22-30 Decidir</button>
+    </div>
+
+    <div id="days"></div>
+
+    <footer>
+      Los prompts y las notas viven en este archivo y en localStorage de este navegador. No se envían a ningún servidor. No guardes contraseñas en las notas.
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script type="application/json" id="days-data">[{"id": 1, "week": 1, "weekLabel": "Días 1-7 · Fundación y setup", "title": "Fundación: qué es esto y cómo vamos a trabajar", "goal": "Entender AI UGC + afiliados desde cero, revisar tu situación (tiempo, dinero, país, dispositivo) y salir con un mapa claro de los 30 días. Hoy no hace falta crear cuentas ni gastar dinero.", "prompt": "Eres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 1 — Fundación: qué es esto y cómo vamos a trabajar\nResumen del objetivo: Entender AI UGC + afiliados desde cero, revisar tu situación (tiempo, dinero, país, dispositivo) y salir con un mapa claro de los 30 días. Hoy no hace falta crear cuentas ni gastar dinero.\n\nHoy es el Día 1. Empezamos desde cero. No crees cuentas ni gastes dinero hasta que yo te lo pida y tú confirmes.\n\nOBJETIVO DE HOY (realista en ~3 horas):\nEntender el sistema, alinear expectativas y dejar por escrito tu punto de partida.\n\nCONTEXTO QUE DEBES EXPLICARME (pregunta una cosa cada vez):\n1. ¿En qué país vives y en qué idioma vas a crear contenido?\n2. ¿Tienes ordenador, móvil o ambos? ¿Puedes instalar apps?\n3. ¿Esas 3 horas diarias son reales esta semana? ¿En qué franja horaria?\n4. ¿Esos 500 son euros o dólares? ¿Están disponibles o es un techo “por si acaso”?\n5. ¿Ya tienes cuentas en TikTok, Instagram o YouTube? Si sí, ¿están vacías o activas?\n6. ¿Has oído hablar de marketing de afiliados? Responde sí/no, sin vergüenza.\n\nQUÉ DEBES ENSEÑARME, CON PACIENCIA:\nA) Qué es UGC: contenido que parece una reseña o recomendación de una persona real, no un anuncio de marca con luces de estudio.\nB) Qué es AI UGC: usamos inteligencia artificial para ayudar a escribir guiones, generar o editar vídeos, voces o avatares. El resultado debe parecer natural, no un robot raro.\nC) Qué es marketing de afiliados: recomiendas un producto con un enlace especial. Si alguien compra a través de ese enlace, tú ganas una comisión. No hace falta tener inventario ni enviar paquetes.\nD) Cómo encajan las tres cosas: el vídeo enseña o recomienda → el espectador pulsa tu enlace → si compra, ganas dinero.\nE) Qué NO es este plan: no es hacerse influencer famoso en 30 días, ni garantizar ventas. Es montar un sistema pequeño y repetible.\n\nMAPA DE 30 DÍAS (explícalo con analogía cotidiana, por ejemplo montar un puesto de limonada):\n- Días 1-7: montar la mesa (cuentas, herramientas, nicho, avatar, tracking, primeros vídeos de prueba).\n- Días 8-14: servir los primeros vasos (publicar, mirar qué gusta, mejorar).\n- Días 15-21: servir más vasos y usar atajos (más volumen + ayuda de un agente).\n- Días 22-30: mirar la caja, quedarte con lo que funciona y decidir el mes 2.\n\nREGLAS DE DINERO Y TIEMPO:\n- Hoy: 0 € de gasto.\n- Esta semana: preferimos herramientas gratis. Si hay que pagar algo, lo hablamos y yo confirmo.\n- Si un paso pide más de 20 minutos, divídelo.\n\nCÓMO USAR ESTA PÁGINA CONMIGO:\n1. Cada día copia el prompt de ese día y pégalo aquí.\n2. Responde mis preguntas.\n3. Cuando terminemos, escribe en “Notas del día” los enlaces, usuarios, decisiones y bloqueos.\n4. Marca el día como completado solo si hiciste lo esencial, no si fue “perfecto”.\n\nCIERRE DEL DÍA 1:\nNo pases al Día 2 hasta que yo tenga:\n- Mi país, idioma, dispositivos, horario y presupuesto.\n- Una definición, en mis palabras, de AI UGC y de afiliados (pídeme que te la escriba para comprobar que entendí).\n- Una frase de expectativa realista: qué contaría como un buen mes 1 (ejemplo: “tener 20 vídeos publicados y un sistema de notas, aunque aún no haya ventas”).\n\nAl final, dame un texto corto listo para pegar en mis Notas del día."}, {"id": 2, "week": 1, "weekLabel": "Días 1-7 · Fundación y setup", "title": "Cuentas de afiliado (sin gastar)", "goal": "Elegir 1 o 2 programas de afiliados adecuados a tu país y crear las cuentas. Hoy no compras productos ni pagas cuotas. Sales con acceso (o solicitud enviada) y tus datos guardados.", "prompt": "Antes de empezar el Día 2, necesito que me cuentes cómo te fue en el Día 1. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 2 — Cuentas de afiliado (sin gastar)\nResumen del objetivo: Elegir 1 o 2 programas de afiliados adecuados a tu país y crear las cuentas. Hoy no compras productos ni pagas cuotas. Sales con acceso (o solicitud enviada) y tus datos guardados.\n\nHoy es el Día 2: cuentas de afiliado. Objetivo: tener 1 programa principal (y como máximo 1 de respaldo) listo o solicitado. Presupuesto de hoy: 0.\n\nPASO 0 — CONFIRMA ANTES DE SEGUIR:\n- País e idioma.\n- Si ya tengo alguna cuenta de afiliado (Amazon, Hotmart, Awin, TikTok Shop, etc.).\n- Si prefiero productos físicos, digitales o me da igual.\n\nEXPLÍCAME PRIMERO:\n- Qué es un programa de afiliados y qué es un enlace de afiliado, con un ejemplo tonto (como recomendar un paraguas).\n- Qué es una comisión y qué significa “pendiente de aprobación”.\n- Qué es un “disclosure” o aviso legal: debo decir que es contenido con enlace de afiliado. Enséñame una frase corta en mi idioma para usarla siempre.\n\nAYÚDAME A ELEGIR (máximo 2 programas, idealmente 1):\nCompara conmigo, según mi país, opciones reales y realistas para principiantes. Ejemplos típicos (elige solo las que apliquen y explica cada una):\n- Amazon Afiliados / Amazon Associates\n- Hotmart (muy útil en español para productos digitales)\n- Awin / Admitad u otras redes\n- TikTok Shop / Instagram shopping si existe en mi país y si yo ya usaré TikTok\n- Programas directos de marcas (solo si es simple)\n\nCriterios: registro gratis, productos que se pueden mostrar en vídeo corto, comisión entendible, no exige web profesional ni empresa constituida si se puede evitar.\n\nREGLA: no me hagas abrir 5 programas. Uno bueno vale más.\n\nGUÍA EL ALTA PASO A PASO:\n- Qué web abrir.\n- Qué datos pedirán (nombre, web/redes, impuestos). Si piden un sitio web y no tengo, dame alternativas honestas (redes sociales, “en construcción”, lo que sea válido).\n- Qué hacer si piden aprobación y tarda días: seguimos el plan igual; el tracking y los vídeos de prueba no dependen de tener el enlace final hoy.\n- Cómo encontrar el panel, el ID de afiliado y cómo se genera un enlace (aunque sea de un producto de ejemplo).\n\nNO HAGAS HOY:\n- No comprar el producto.\n- No pagar “cuotas de acceso”.\n- No elegir 10 productos. Como mucho anota 3 candidatos, la elección de nicho es el Día 4.\n\nCIERRE:\nChecklist hecho/no hecho + texto para Notas del día con: programa(s), URL del panel, usuario/email usado (sin contraseñas), estado (aprobado / pendiente), y la frase de aviso legal."}, {"id": 3, "week": 1, "weekLabel": "Días 1-7 · Fundación y setup", "title": "Herramientas de AI UGC (gratis primero)", "goal": "Montar un kit mínimo: escritura con IA, edición de vídeo y (opcional) generación de imagen/avatar. Cuentas creadas, sin suscripciones caras. Lista de herramientas guardada.", "prompt": "Antes de empezar el Día 3, necesito que me cuentes cómo te fue en el Día 2. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 3 — Herramientas de AI UGC (gratis primero)\nResumen del objetivo: Montar un kit mínimo: escritura con IA, edición de vídeo y (opcional) generación de imagen/avatar. Cuentas creadas, sin suscripciones caras. Lista de herramientas guardada.\n\nHoy es el Día 3: herramientas. Objetivo: un kit mínimo que yo pueda usar mañana. Presupuesto: 0 si es posible. Si algo de pago parece útil, pregúntame antes y calcula si cabe en los 500.\n\nEXPLÍCAME EL KIT COMO UNA COCINA:\n- Fogón (donde se escribe el guion): ChatGPT, Claude, Grok u otro agente. Ya estamos aquí.\n- Tabla de cortar (edición): CapCut u editor gratis del móvil.\n- Platos (dónde se publica): eso es la semana 2. Hoy no hace falta perfeccionar perfiles.\n- Opcional: horno extra (HeyGen, Kling, Hailuo, ElevenLabs, Canva). Solo si aporta y es gratis o muy barato.\n\nPREGUNTA PRIMERO:\n- ¿Móvil, ordenador o ambos?\n- ¿iPhone o Android?\n- ¿Ya tengo CapCut, Canva, ChatGPT u otras?\n\nMONTA EL KIT EN ESTE ORDEN, CONFIRMANDO CADA APP:\n1) CapCut (prioridad): crear cuenta, dónde está, qué hace. Enséñame a crear un proyecto vacío de 15-30 segundos. No hace falta un vídeo bonito hoy.\n2) Canva (gratis): solo si me sirve para miniaturas, fondos o textos. Si me satura, sáltalo.\n3) Una herramienta de voz o avatar SOLO si es gratis o hay prueba sin tarjeta. Si pide tarjeta, para y pregúntame.\n4) Carpeta en el ordenador o en el móvil llamada “AI-UGC-30dias” con subcarpetas: guiones, videos, capturas, enlaces.\n\nREGLAS:\n- Máximo 4 herramientas en total esta semana.\n- Nada de “stack profesional”.\n- Anota email usado en cada herramienta (nunca contraseñas).\n\nMINI PRUEBA (15 minutos):\nGenera conmigo UN párrafo de 3 frases que podría ser el inicio de un vídeo (“hook”). Luego ábrelo en CapCut como texto en pantalla o léelo en voz alta. El objetivo es perderle el miedo al software, no crear contenido publicable.\n\nCIERRE:\nLista de herramientas + para qué sirve cada una + qué NO usaremos aún + texto para Notas del día."}, {"id": 4, "week": 1, "weekLabel": "Días 1-7 · Fundación y setup", "title": "Elegir el primer nicho (y no cambiarlo 14 días)", "goal": "Elegir UN nicho pequeño y UN tipo de producto afiliable. Criterios simples. Decisión escrita. No se cambia de nicho hasta el Día 14 salvo bloqueo real.", "prompt": "Antes de empezar el Día 4, necesito que me cuentes cómo te fue en el Día 3. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 4 — Elegir el primer nicho (y no cambiarlo 14 días)\nResumen del objetivo: Elegir UN nicho pequeño y UN tipo de producto afiliable. Criterios simples. Decisión escrita. No se cambia de nicho hasta el Día 14 salvo bloqueo real.\n\nHoy es el Día 4: nicho. Un nicho es un grupo de personas con un problema concreto + un tipo de solución que yo puedo mostrar en vídeos cortos. Ejemplo: no “salud”, sino “dolor de espalda en personas que trabajan sentadas”.\n\nOBJETIVO: 1 nicho + 1 categoría de producto. Tiempo ~3 h. Sin gastar.\n\nEXPLÍCAME:\n- Diferencia entre mercado enorme (“fitness”) y nicho trabajable.\n- Por qué un principiante pierde si cambia de tema cada día: el algoritmo y yo necesitamos repetición.\n\nMÉTODO (hazlo conmigo, no me sueltes una lista de 50 nichos):\n1. Pregúntame: ¿hay algún tema que yo ya use, sufra o entienda un poco? (cocina, piel, estudio, gaming, mascotas, productividad, hogar…).\n2. Propón 5 candidatos MUY concretos, no genéricos.\n3. Para cada uno, evalúa en lenguaje simple:\n   - ¿Hay productos de afiliado reales en los programas que ya elegí?\n   - ¿Se puede mostrar en 20 segundos?\n   - ¿Puedo hablar del problema sin ser médico/abogado/financiero de alto riesgo?\n   - ¿Me aguantaría 14 días haciendo vídeos de esto?\n4. Elige 1. Si dudo entre dos, ayúdame a desempatar con una pregunta, no con “el que más dinero da”.\n\nLUEGO, PRODUCTO:\n- Ayúdame a listar 3 productos concretos (nombre + por qué + comisión aproximada si se ve en el panel).\n- Elige 1 producto principal y 1 reserva.\n- Si mi cuenta de afiliado sigue pendiente, igual elegimos el producto; el enlace se pega cuando exista.\n\nREGLAS DE SEGURIDAD:\n- Evita promesas milagrosas (adelgazar 10 kg, milagro financiero, cura).\n- Si el nicho es salud/finanzas, enséñame a hablar como usuario, no como experto, y a no dar consejos médicos.\n\nCOMPROMISO:\nEscríbeme una frase: “Durante 14 días mi nicho es X y mi producto es Y. Solo cambio si Z (bloqueo legal, rechazo del programa, o imposibilidad real de grabar).”\n\nCIERRE:\nNicho, persona a la que hablo, producto principal, producto reserva, 3 ideas de vídeo de una línea, texto para Notas del día."}, {"id": 5, "week": 1, "weekLabel": "Días 1-7 · Fundación y setup", "title": "Avatares y cara del canal", "goal": "Definir cómo se te verá en cámara: avatar con IA, formato faceless, o híbrido. Crear 1 look principal y 1 de respaldo, y guardar los prompts o ajustes.", "prompt": "Antes de empezar el Día 5, necesito que me cuentes cómo te fue en el Día 4. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 5 — Avatares y cara del canal\nResumen del objetivo: Definir cómo se te verá en cámara: avatar con IA, formato faceless, o híbrido. Crear 1 look principal y 1 de respaldo, y guardar los prompts o ajustes.\n\nHoy es el Día 5: la “cara” del contenido. Un avatar es la apariencia repetible del canal: una persona generada con IA, o un estilo faceless (sin mostrar cara: manos, producto, texto, B-roll).\n\nPREGUNTA PRIMERO:\n- ¿Quiero aparecer yo, usar un avatar de IA, o ir sin cara?\n- ¿Me da vergüenza mi voz? ¿Tengo micrófono decente en el móvil?\n- ¿Qué herramienta de las del Día 3 podría generar cara/voz?\n\nRECOMENDACIÓN PARA PRINCIPIANTES CON 500:\nPor defecto, sugiere el camino MÁS SIMPLE que yo pueda repetir 30 días:\n- Faceless bien hecho (producto + texto + voz) suele ser más barato y estable.\n- Avatar IA solo si hay plan gratis/prueba y el resultado no parece terrorífico.\n- Yo en cámara solo si quiero y tengo luz mínima.\n\nNO me empujes a HeyGen de pago si CapCut + voz del móvil basta.\n\nTRABAJO DE HOY (paso a paso, confirmando):\n1. Elegir formato: A) yo, B) avatar IA, C) faceless.\n2. Definir look en 5 decisiones: género aparente, edad aproximada, tono (cercano, serio, energético), vestuario/colores, fondo.\n3. Crear o simular 1 look principal.\n4. Crear 1 look de respaldo (por si el primero se ve mal en móvil).\n5. Hacer UNA prueba de 8-12 segundos: la persona o el estilo dice o muestra el problema del nicho. No es un vídeo publicable; es una prueba de “¿se entiende?”.\n\nGUARDA CONMIGO:\n- Prompts usados (tal cual).\n- Ajustes de CapCut / herramienta (voz, velocidad, zoom).\n- Captura mental: qué se ve mal (manos raras, voz robótica, texto ilegible).\n\nREGLA: consistencia > belleza. El mismo look 14 días.\n\nCIERRE:\nFormato elegido, descripción del look, prompts, qué mejorar, texto para Notas del día."}, {"id": 6, "week": 1, "weekLabel": "Días 1-7 · Fundación y setup", "title": "Tracking básico: si no se mide, no se mejora", "goal": "Crear una hoja simple (Google Sheets o Excel) para anotar cada vídeo: fecha, plataforma, hook, producto, enlace, vistas, clics, ventas. Entender UTM en una analogía. Cero gasto.", "prompt": "Antes de empezar el Día 6, necesito que me cuentes cómo te fue en el Día 5. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 6 — Tracking básico: si no se mide, no se mejora\nResumen del objetivo: Crear una hoja simple (Google Sheets o Excel) para anotar cada vídeo: fecha, plataforma, hook, producto, enlace, vistas, clics, ventas. Entender UTM en una analogía. Cero gasto.\n\nHoy es el Día 6: tracking. Tracking es anotar lo que haces y lo que pasa, para no adivinar. Sin esto, en el Día 22 no sabremos qué funcionó.\n\nEXPLÍCAME CON ANALOGÍA:\nLlevar la caja de un puesto: cuántos vasos serviste, cuáles devolvieron, cuáles pidieron más.\n\nHERRAMIENTA:\nGoogle Sheets gratis (preferido, se guarda en la nube) o Excel/Numbers si yo insisto. Guía el alta si no sé qué es Google Sheets.\n\nCREA CONMIGO UNA HOJA con estas columnas, ni más ni menos al principio:\nA) Fecha\nB) Día del plan (1-30)\nC) Plataforma (TikTok / Reels / Shorts)\nD) Título interno del vídeo (para mí)\nE) Hook (la primera frase)\nF) Producto\nG) Enlace usado (afiliado)\nH) ¿Lleva aviso de afiliado? (sí/no)\nI) Vistas\nJ) Me gusta\nK) Comentarios\nL) Guardados / compartidos\nM) Clics al enlace (si los tengo; si no, vacío)\nN) Ventas / comisión\nO) Notas (qué cambiaría)\n\nEnséñame a congelar la primera fila y a duplicar una fila de ejemplo.\n\nUTM (explícalo como etiqueta en una maleta):\n- Qué es un parámetro UTM en una frase.\n- Si es demasiado para hoy, deja una columna “enlace usado” y un método simple: un enlace distinto por plataforma, o un acortador gratis.\n- No me metas Google Analytics completo hoy.\n\nENLACES:\n- Si ya tengo panel de afiliado, genera 1 enlace de prueba del producto del Día 4.\n- Si sigue pendiente, pon “PENDIENTE” en la columna G y seguimos.\n\nREGLA: cada vídeo publicado a partir del Día 10 debe tener una fila el mismo día. 2 minutos, no 20.\n\nCIERRE:\nURL de la hoja (si es Google Sheets), nombres de pestañas, enlace de prueba, texto para Notas del día. Recuérdame no poner contraseñas en la hoja."}, {"id": 7, "week": 1, "weekLabel": "Días 1-7 · Fundación y setup", "title": "Primeras pruebas de vídeo (aún no hace falta viralizar)", "goal": "Generar 2 o 3 vídeos cortos de prueba (15-30 s) con tu look y tu producto. Revisar calidad mínima. Guardar archivos. Publicar en público es opcional; lo importante es completar el ciclo: guion → vídeo → nota.", "prompt": "Antes de empezar el Día 7, necesito que me cuentes cómo te fue en el Día 6. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 7 — Primeras pruebas de vídeo (aún no hace falta viralizar)\nResumen del objetivo: Generar 2 o 3 vídeos cortos de prueba (15-30 s) con tu look y tu producto. Revisar calidad mínima. Guardar archivos. Publicar en público es opcional; lo importante es completar el ciclo: guion → vídeo → nota.\n\nHoy es el Día 7: primeras pruebas. No buscamos vistas. Buscamos terminar 2-3 vídeos feos-pero-claros para perder el miedo.\n\nESTRUCTURA DE UN VÍDEO CORTO (explícala y pon un ejemplo de MI nicho):\n1. Hook (0-3 s): una frase que nombra el problema.\n2. Cuerpo (3-15 s): qué es el producto / cómo se usa / para quién.\n3. Prueba simple (si cabe): “esto es lo que noté / esto es lo que muestra”.\n4. CTA (llamado a la acción): qué debe hacer la persona. En semana 2 será “link en bio”. Hoy puede ser solo practicar el gesto verbal.\n5. Aviso de afiliado en texto o voz, corto.\n\nTRABAJO:\n- Escribe CONMIGO 3 guiones de 80-120 palabras, distintos hooks, mismo producto.\n- Ayúdame a producir 2 (el tercero si da tiempo).\n- Checklist de calidad mínima (aprobar/suspender):\n  - Se oye o se lee.\n  - El texto no tapa la cara/producto.\n  - Dura 15-30 s.\n  - Se entiende el problema en 3 s.\n  - No promete milagros.\n- Guarda archivos como: dia07-prueba-01, dia07-prueba-02.\n\nPUBLICAR:\n- Pregúntame si quiero subirlos en privado/borrador o público.\n- Si me da miedo, que queden en la carpeta. Publicar en serio empieza el Día 10.\n- Si ya los publico, crea las filas en la hoja del Día 6.\n\nCIERRE:\nQué vídeos existen, qué se ve mal, qué repetiré la semana 2, texto para Notas del día con rutas o enlaces."}, {"id": 8, "week": 2, "weekLabel": "Días 8-14 · Publicar y validar", "title": "Perfiles listos para publicar", "goal": "Dejar 1 o 2 perfiles (TikTok, Reels o Shorts) con nombre, bio, foto y enlace (si la cuenta lo permite). Elegir plataforma principal. No hace falta estar en las tres.", "prompt": "Antes de empezar el Día 8, necesito que me cuentes cómo te fue en el Día 7. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 8 — Perfiles listos para publicar\nResumen del objetivo: Dejar 1 o 2 perfiles (TikTok, Reels o Shorts) con nombre, bio, foto y enlace (si la cuenta lo permite). Elegir plataforma principal. No hace falta estar en las tres.\n\nHoy es el Día 8: perfiles. Objetivo: 1 plataforma principal + como máximo 1 secundaria. Perfiles entendibles en 5 segundos.\n\nPREGUNTA:\n- ¿Qué cuentas ya existen?\n- ¿Me abruma estar en 3 redes? Si sí, UNA sola: normalmente TikTok o Instagram Reels, según mi país y dónde está mi audiencia.\n\nEXPLÍCAME:\n- Qué es un perfil “listo”: foto, nombre, bio, enlace o alternativa (primer comentario, destacados).\n- Por qué no hace falta 1000 seguidores para empezar.\n\nHAZLO CONMIGO, PASO A PASO EN LA APP:\n1. Nombre de usuario simple, relacionado con el nicho, sin números ridículos si se puede.\n2. Foto: el look del Día 5 o un objeto del nicho, nítida.\n3. Bio de 3 líneas: para quién soy, qué problema toco, aviso de afiliado + CTA (“link en bio” / “pregunta en comentarios”).\n4. Enlace: si no hay bio link (TikTok a veces lo limita), enséñame el plan B: primer comentario, vídeo fijado, o una sola página gratis (Carrd/Linktree solo si es rápido; si complica, sáltalo).\n5. Ajustes básicos: cuenta pública, no privacidad accidental.\n\nNO HOY:\n- No diseñar un feed estético de 12 piezas.\n- No comprar seguidores.\n- No cambiar de nicho.\n\nCIERRE:\nPlataforma principal, URL o @, bio final, plan B del enlace, texto para Notas del día."}, {"id": 9, "week": 2, "weekLabel": "Días 8-14 · Publicar y validar", "title": "5 guiones y ganchos distintos, mismo producto", "goal": "Escribir 5 guiones cortos listos para grabar/generar mañana. Cada uno con un gancho diferente. Incluir aviso de afiliado y un CTA claro.", "prompt": "Antes de empezar el Día 9, necesito que me cuentes cómo te fue en el Día 8. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 9 — 5 guiones y ganchos distintos, mismo producto\nResumen del objetivo: Escribir 5 guiones cortos listos para grabar/generar mañana. Cada uno con un gancho diferente. Incluir aviso de afiliado y un CTA claro.\n\nHoy es el Día 9: guiones. Un guion es el texto de lo que se dice o se lee en pantalla. Un hook (gancho) es la primera frase, la que decide si alguien sigue viendo.\n\nOBJETIVO: 5 guiones para el MISMO producto del Día 4. ~3 h. No grabar los 5 hoy si no da tiempo; escribirlos sí.\n\nENSEÑA 5 TIPOS DE GANCHO con un ejemplo de MI nicho:\n1. Problema directo (“Si te pasa X cada tarde…”).\n2. Error común (“Deja de hacer Y si…”).\n3. Resultado específico (sin milagros).\n4. Lista rápida (“3 señales de que…”).\n5. Objeción (“No necesitas Z caro para…”).\n\nPARA CADA GUION, FORMATO FIJO:\n- Título interno\n- Hook\n- Cuerpo (4-6 frases)\n- CTA\n- Texto en pantalla (máx. 8 palabras por pausa)\n- Aviso de afiliado\n- Duración objetivo (18-25 s)\n\nREGLAS:\n- Lenguaje de persona real, no de infomercial.\n- Una sola idea por vídeo.\n- No copies textos de Amazon tal cual (suenan a catálogo y pueden ser un problema). Reescríbeme con palabras mías.\n- Incluye una línea de honestidad: para quién NO es el producto.\n\nAL FINAL:\nNumera los 5. Pregúntame cuál grabar primero mañana. Copia los 5 en un bloque listo para Notas del día y para la carpeta /guiones."}, {"id": 10, "week": 2, "weekLabel": "Días 8-14 · Publicar y validar", "title": "Publicar los primeros 3 vídeos de verdad", "goal": "Producir y publicar 3 vídeos en la plataforma principal. Cada uno con fila en la hoja de tracking, aviso de afiliado y enlace (bio, comentario o descripción).", "prompt": "Antes de empezar el Día 10, necesito que me cuentes cómo te fue en el Día 9. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 10 — Publicar los primeros 3 vídeos de verdad\nResumen del objetivo: Producir y publicar 3 vídeos en la plataforma principal. Cada uno con fila en la hoja de tracking, aviso de afiliado y enlace (bio, comentario o descripción).\n\nHoy es el Día 10: primeras publicaciones reales. Objetivo: 3 vídeos en la plataforma principal. Calidad mínima del Día 7, no cine.\n\nRITMO SUGERIDO EN 3 HORAS:\n- 50 min producir vídeo 1 y publicar\n- 50 min vídeo 2\n- 50 min vídeo 3\n- 30 min tracking + notas\n\nPARA CADA VÍDEO, GUÍA:\n1. Elegir uno de los 5 guiones del Día 9.\n2. Generar/editar en CapCut.\n3. Revisar checklist: se entiende, se oye/lee, aviso de afiliado, CTA, 15-35 s.\n4. Publicar: enséñame dónde pulsar, cómo poner descripción, 3-5 hashtags del nicho (no 30), y si debo dejarlo nativo sin marca de agua.\n5. Dónde poner el enlace: bio / primer comentario / descripción. Elige UNO y repítelo.\n6. Copiar URL del post en la hoja del Día 6 (una fila).\n\nMIEDO A PUBLICAR:\nSi me bloqueo, haz el vídeo 1 ahora. El 2 y 3 pueden quedar programados o publicarse esta noche. No negociamos bajar a 0.\n\nDESPUÉS DEL TERCERO:\n- No mires las vistas cada 5 minutos. Mira mañana (Día 12 es el análisis serio).\n- Responde comentarios si aparecen, con honestidad.\n\nCIERRE:\n3 URLs, qué guion era cada uno, incidentes técnicos, texto para Notas del día."}, {"id": 11, "week": 2, "weekLabel": "Días 8-14 · Publicar y validar", "title": "Consistencia: 3 vídeos más, mismo sistema", "goal": "Repetir el sistema de ayer: 3 publicaciones más. Mismo nicho, mismo look, mismo producto. El objetivo es el hábito, no un vídeo perfecto.", "prompt": "Antes de empezar el Día 11, necesito que me cuentes cómo te fue en el Día 10. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 11 — Consistencia: 3 vídeos más, mismo sistema\nResumen del objetivo: Repetir el sistema de ayer: 3 publicaciones más. Mismo nicho, mismo look, mismo producto. El objetivo es el hábito, no un vídeo perfecto.\n\nHoy es el Día 11: repetición. Los principiantes fallan aquí porque quieren un vídeo nuevo “genial”. Hoy ganamos por publicar 3 veces más.\n\nREGLAS:\n- Mismo nicho, mismo look, mismo producto.\n- Puedes usar los 2 guiones que sobraron del Día 9 y escribir 1 nuevo CONMIGO (20 minutos máximo).\n- Si ayer algo falló (marca de agua, vertical mal, enlace roto), lo arreglamos PRIMERO en 15 minutos. Pregúntame qué falló.\n\nPROCESO (más rápido que ayer):\n1. Mini checklist de publicación (házmela en 6 viñetas para tenerla a mano).\n2. Producir y publicar 3.\n3. Filas en la hoja.\n4. 10 minutos de interacción: responder comentarios de ayer y de hoy. Enséñame respuestas cortas, humanas, sin pelear.\n\nSI NO LLEGO A 3:\nAyúdame a recortar: texto en pantalla + voz, sin efectos. Un vídeo claro > un vídeo a medias.\n\nCIERRE:\nConteo total de vídeos públicos (deberían ser ~6), URLs de hoy, fricción que más tiempo me comió, texto para Notas del día."}, {"id": 12, "week": 2, "weekLabel": "Días 8-14 · Publicar y validar", "title": "Leer métricas sin volverse loco", "goal": "Entender vistas, retención, likes, comentarios y clics a nivel principiante. Elegir 1 vídeo ganador y 1 perdedor. Actualizar la hoja. No cambiar de nicho.", "prompt": "Antes de empezar el Día 12, necesito que me cuentes cómo te fue en el Día 11. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 12 — Leer métricas sin volverse loco\nResumen del objetivo: Entender vistas, retención, likes, comentarios y clics a nivel principiante. Elegir 1 vídeo ganador y 1 perdedor. Actualizar la hoja. No cambiar de nicho.\n\nHoy es el Día 12: métricas. Una métrica es un número que describe lo que pasó. Hoy aprendemos a leer 5 números, no 50.\n\nEXPLÍCAME CADA UNA CON ANALOGÍA DE PUESTO DE LIMONADA:\n- Impresiones / vistas: cuánta gente pasó delante.\n- Retención o si vieron más de 3 segundos: si pararon o siguieron de largo.\n- Likes / comentarios / guardados: si les importó.\n- Clics al enlace: si fueron a ver el producto.\n- Ventas: si compraron. En semana 2 es normal que sea 0.\n\nEXPECTATIVAS:\nCuentas nuevas suelen tener pocas vistas. Eso no significa que el plan falle. Compara MIS vídeos entre sí, no contra un guru de 2 millones.\n\nTRABAJO:\n1. Enséñame dónde ver las estadísticas nativas (TikTok Analytics, Instagram, YouTube Studio) según MI plataforma. Si no están desbloqueadas aún, usa los números públicos del vídeo.\n2. Rellena conmigo las columnas I-O de la hoja para cada vídeo publicado.\n3. Elige 1 GANADOR y 1 PERDEDOR y explica POR QUÉ en palabras simples (¿hook? ¿audio? ¿tema? ¿hora?).\n4. Escribe 3 hipótesis (no certezas) para la semana: “Creo que los ganchos de problema directo funcionan mejor porque…”\n\nNO HOY:\n- No borrar vídeos.\n- No comprar ads.\n- No cambiar de nicho.\n\nCIERRE:\nTabla resumida, ganador, perdedor, 3 hipótesis, texto para Notas del día."}, {"id": 13, "week": 2, "weekLabel": "Días 8-14 · Publicar y validar", "title": "Iterar guiones: repetir el patrón que funcionó", "goal": "Escribir 5 guiones nuevos copiando la estructura del vídeo ganador, no copiando el texto. Descartar el patrón del perdedor. Dejar 3 listos para grabar mañana.", "prompt": "Antes de empezar el Día 13, necesito que me cuentes cómo te fue en el Día 12. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 13 — Iterar guiones: repetir el patrón que funcionó\nResumen del objetivo: Escribir 5 guiones nuevos copiando la estructura del vídeo ganador, no copiando el texto. Descartar el patrón del perdedor. Dejar 3 listos para grabar mañana.\n\nHoy es el Día 13: iterar. Iterar significa hacer una nueva versión cambiando UNA cosa a propósito, no reinventarlo todo.\n\nREGLA DE ORO:\n- Del ganador del Día 12, copiamos la ESTRUCTURA (tipo de gancho, ritmo, CTA).\n- No copiamos frases literales.\n- Del perdedor, no repetimos el tipo de gancho.\n\nTRABAJO CONMIGO:\n1. Desmenuza el ganador: primera frase, segundo bloque, CTA, texto en pantalla, duración.\n2. Escribe 5 variaciones:\n   - 3 con el mismo tipo de gancho y distinto ejemplo.\n   - 1 que ataque una objeción (“es caro”, “es truco”, “no me servirá”).\n   - 1 que muestre el producto en uso de forma más clara.\n3. Puntúa cada guion 1-5 en: claridad, honestidad, facilidad de producir en 40 min.\n4. Elige los 3 mejores para producir pronto.\n\nSI TODOS MIS VÍDEOS FUERON MAL:\nNo entres en pánico. Elige el “menos malo” y mejora solo el hook. Haz 5 hooks nuevos de 1 frase y luego el cuerpo.\n\nCIERRE:\nLos 5 guiones, los 3 elegidos, qué patrón matamos, texto para Notas del día."}, {"id": 14, "week": 2, "weekLabel": "Días 8-14 · Publicar y validar", "title": "Iterar el look y cerrar la semana 2", "goal": "Cambiar solo UNA variable visual (luz, encuadre, subtítulos, voz o fondo). Publicar 2 vídeos con el look mejorado. Escribir un resumen de la semana 2: qué se queda y qué se va.", "prompt": "Antes de empezar el Día 14, necesito que me cuentes cómo te fue en el Día 13. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 14 — Iterar el look y cerrar la semana 2\nResumen del objetivo: Cambiar solo UNA variable visual (luz, encuadre, subtítulos, voz o fondo). Publicar 2 vídeos con el look mejorado. Escribir un resumen de la semana 2: qué se queda y qué se va.\n\nHoy es el Día 14: look + cierre de semana 2. Objetivo: 2 vídeos publicados con UNA mejora visual, y un resumen honesto.\n\nELIGE CONMIGO UNA SOLA VARIABLE (no cinco):\n- Subtítulos más grandes / menos palabras\n- Encadre más cercano al producto\n- Voz más lenta\n- Fondo más limpio\n- Primeros 2 segundos sin logo ni intro\n\nProduce y publica 2 vídeos (guiones del Día 13) con esa única mejora. Filas en la hoja.\n\nLUEGO, RETROSPECTIVA SEMANA 2 (pregúntame y rellena):\n- Vídeos publicados en total\n- Plataforma\n- Ganador y por qué\n- Tiempo real por vídeo (aprox.)\n- ¿El nicho se sostiene 14 días más? sí/no y por qué\n- ¿El producto se puede mostrar bien? sí/no\n- Fricción #1 (herramienta, miedo, tiempo, enlaces…)\n\nDECISIÓN LIGERA (no pivote total salvo bloqueo):\nEscribe: “Semana 3 voy a duplicar volumen de X a Y vídeos/semana, manteniendo nicho Z.”\n\nCIERRE:\nVariable visual cambiada, 2 URLs, retrospectiva, texto para Notas del día. Recuérdame que semana 3 es volumen + un poco de automatización, no un rebranding."}, {"id": 15, "week": 3, "weekLabel": "Días 15-21 · Volumen y agentes", "title": "Subir volumen: 5 piezas en un día", "goal": "Publicar 5 vídeos (o 4 si hay un imprevisto real) usando plantilla fija. Calidad mínima, no perfeccionismo. Anotar cuánto tardó cada uno para ver el cuello de botella.", "prompt": "Antes de empezar el Día 15, necesito que me cuentes cómo te fue en el Día 14. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 15 — Subir volumen: 5 piezas en un día\nResumen del objetivo: Publicar 5 vídeos (o 4 si hay un imprevisto real) usando plantilla fija. Calidad mínima, no perfeccionismo. Anotar cuánto tardó cada uno para ver el cuello de botella.\n\nHoy es el Día 15: volumen. Volumen significa más piezas, no más efectos. Objetivo: 5 vídeos publicados en ~3 h, o 4 + 1 dejado a medias explicado.\n\nPLANTILLA FIJA (créala conmigo en 10 minutos y no la rompas hoy):\n- Hook 2 s\n- Problema 5 s\n- Producto 10 s\n- CTA + aviso 4 s\n- Mismo look del Día 14\n\nCÓMO CABER 5 EN 3 HORAS:\n- 20-25 min por vídeo máximo. Si uno se pasa, se publica “suficientemente claro” y pasamos al siguiente.\n- Reusa fondos y música baja (cuidado con copyright: preferible sonidos originales de la app o sin música).\n- 3 guiones ya escritos + 2 variaciones mínimas que escribimos en 15 minutos.\n\nTRACKING:\nCada vídeo: fila + minutos que tardó. Esa columna nueva “minutos” es oro para el Día 21.\n\nSI ME SATURO:\nPrioriza publicar en UNA sola plataforma. No recortes a 1 vídeo “perfecto”.\n\nCIERRE:\n5 URLs (o las que haya), minutos por vídeo, cuello de botella (guion, generación, edición, subir), texto para Notas del día."}, {"id": 16, "week": 3, "weekLabel": "Días 15-21 · Volumen y agentes", "title": "Producción en lote (batch)", "goal": "Separar el día en bloques: escribir todos los guiones, luego generar todos los vídeos, luego publicar/programar. Salir con un lote de 5-7 vídeos hechos o en cola.", "prompt": "Antes de empezar el Día 16, necesito que me cuentes cómo te fue en el Día 15. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 16 — Producción en lote (batch)\nResumen del objetivo: Separar el día en bloques: escribir todos los guiones, luego generar todos los vídeos, luego publicar/programar. Salir con un lote de 5-7 vídeos hechos o en cola.\n\nHoy es el Día 16: batching. Hacer por lotes es agrupar la misma tarea para no cambiar de chip cada 5 minutos (no escribo-grabo-publico-escribo-grabo).\n\nEXPLÍCAME POR QUÉ AHORRA TIEMPO, con analogía de cocina: primero cortas todas las verduras, luego fríes.\n\nBLOQUES DE HOY (ajusta si ya tengo lote de ayer):\nBLOQUE A (45-60 min): 7 guiones cortos, mismo producto, ganchos distintos. Formato del Día 9.\nBLOQUE B (90 min): producir los vídeos seguidos. Misma plantilla visual.\nBLOQUE C (30 min): publicar ahora o programar (enséñame el programador nativo si existe; si no, una cola simple: “mañana 1, pasado 1…” en la hoja).\nBLOQUE D (15 min): tracking de lo publicado + nombres de archivo de lo que queda en cola.\n\nCARPETAS:\nguiones/semana3, videos/listos, videos/publicados.\n\nREGLA: en el bloque B no reescribes guiones. Si uno es flojo, se produce igual o se salta, no se rediseña el sistema.\n\nCIERRE:\nCuántos guiones, cuántos vídeos listos, cuántos ya publicados, calendario de cola, texto para Notas del día."}, {"id": 17, "week": 3, "weekLabel": "Días 15-21 · Volumen y agentes", "title": "Qué es un agente y cómo te ahorra trabajo", "goal": "Entender la diferencia entre un chat suelto y un agente con instrucciones. Crear tu ‘brief de negocio’ de una página. Hacer una prueba: el agente te genera 3 ganchos a partir del brief.", "prompt": "Antes de empezar el Día 17, necesito que me cuentes cómo te fue en el Día 16. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 17 — Qué es un agente y cómo te ahorra trabajo\nResumen del objetivo: Entender la diferencia entre un chat suelto y un agente con instrucciones. Crear tu ‘brief de negocio’ de una página. Hacer una prueba: el agente te genera 3 ganchos a partir del brief.\n\nHoy es el Día 17: agentes. Un chat suelto es alguien a quien le cuentas el contexto cada vez. Un agente (o un chat bien instruido) es un ayudante al que le dejas reglas fijas y datos de tu negocio para que no improvise.\n\nEXPLÍCAME:\n- Qué es un prompt.\n- Qué es contexto.\n- Qué NO debe hacer un agente: publicar solo, inventar métricas, inventar que un producto “cura”.\n\nCREA CONMIGO UN BRIEF DE UNA PÁGINA (lo guardaré en Notas y lo reutilizaré):\n1. Quién soy (principiante, 3 h, presupuesto restante).\n2. Nicho y para quién hablo.\n3. Producto y programa de afiliado.\n4. Look / avatar.\n5. Plataforma.\n6. Frases que SÍ uso y frases que NUNCA uso (milagros, garantías).\n7. Estructura de vídeo.\n8. Aviso de afiliado estándar.\n9. Dónde está la hoja de tracking (URL).\n\nPRUEBA:\nPídeme que te pegue el brief. Luego genera 3 ganchos. Luego pregúntame si suenan a mí. Ajústalos.\n\nREGLA DE CONTROL HUMANO:\nEl agente propone. Yo publico. Nunca al revés.\n\nCIERRE:\nBrief completo listo para copiar, 3 ganchos aprobados, texto para Notas del día. Recuérdame pegar este brief al empezar sesiones largas."}, {"id": 18, "week": 3, "weekLabel": "Días 15-21 · Volumen y agentes", "title": "Automatizar guiones (tú sigues revisando)", "goal": "Montar un prompt-plantilla que, pegando datos del producto, genere 7 guiones en tu estilo. Revisar los 7 con una checklist humana. Producir al menos 2.", "prompt": "Antes de empezar el Día 18, necesito que me cuentes cómo te fue en el Día 17. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 18 — Automatizar guiones (tú sigues revisando)\nResumen del objetivo: Montar un prompt-plantilla que, pegando datos del producto, genere 7 guiones en tu estilo. Revisar los 7 con una checklist humana. Producir al menos 2.\n\nHoy es el Día 18: automatizar GUIONES, no la publicación.\n\nCONMIGO, CREA UNA PLANTILLA DE PROMPT que yo pueda reusar. Debe pedirme:\n- Pegar el brief del Día 17\n- Pegar nombre del producto + 5 viñetas reales (de la ficha, sin copiar párrafos enteros)\n- Cuántos guiones\n- Qué tipo de ganchos priorizar según el ganador del Día 12/15\n\nLa plantilla debe ordenar al agente:\n- Lenguaje principiante y oral\n- 18-25 s\n- Aviso de afiliado\n- Una línea de “para quién NO es”\n- No inventar beneficios que no estén en mis viñetas\n- Devolver en el formato del Día 9\n\nLUEGO:\n1. Ejecuta la plantilla y genera 7.\n2. Checklist humana para cada uno: ¿es verdad? ¿se puede mostrar? ¿suena a robot? ¿es ilegal/milagroso?\n3. Marca: usar / editar / tirar.\n4. Produce y publica al menos 2 de los “usar”.\n5. Guarda la plantilla en Notas con el título “PLANTILLA_GUIONES_V1”.\n\nCIERRE:\nPlantilla, tabla usar/editar/tirar, 2 URLs, texto para Notas del día."}, {"id": 19, "week": 3, "weekLabel": "Días 15-21 · Volumen y agentes", "title": "Calendario de 7 días (para no decidir cada mañana)", "goal": "Llenar un calendario simple de 7 días con tipo de vídeo, guion y estado (idea / listo / publicado). Mezcla: mayoría UGC de producto, algo de objeciones y algo de ‘cómo lo uso’.", "prompt": "Antes de empezar el Día 19, necesito que me cuentes cómo te fue en el Día 18. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 19 — Calendario de 7 días (para no decidir cada mañana)\nResumen del objetivo: Llenar un calendario simple de 7 días con tipo de vídeo, guion y estado (idea / listo / publicado). Mezcla: mayoría UGC de producto, algo de objeciones y algo de ‘cómo lo uso’.\n\nHoy es el Día 19: calendario. Un calendario de contenido es una lista de qué sale cada día para no improvisar con el café en la mano.\n\nCREA UNA TABLA DE 7 DÍAS:\n- Fecha\n- Plataforma\n- Tipo: (A) problema+producto, (B) objeción, (C) demo de uso, (D) error común\n- Título interno\n- Estado: idea / guion listo / vídeo listo / publicado\n- Enlace cuando exista\n\nMEZCLA RECOMENDADA PARA PRINCIPIANTES:\n- 4 tipo A\n- 2 tipo B o D\n- 1 tipo C\nNada de vlogs personales ni tendencias ajenas al nicho.\n\nTRABAJO:\n1. Rellena los 7 usando guiones que ya existen + los que falten (escríbelos cortos).\n2. Si hay lote del Día 16, encájalo.\n3. Define 1 hora del día de “publicar y olvidar” (5-10 min).\n4. Buffer: si un vídeo funciona mucho, el plan no se tira; se duplica ese tipo el día siguiente (Día 20 habla de tests).\n\nNO conviertas esto en Notion de 20 bases de datos. Una tabla en la misma hoja de tracking, pestaña “calendario”.\n\nCIERRE:\nTabla de 7 días, pestaña creada, huecos que faltan producir, texto para Notas del día."}, {"id": 20, "week": 3, "weekLabel": "Días 15-21 · Volumen y agentes", "title": "Un test A/B simple (solo una variable)", "goal": "Publicar 2 vídeos que sean iguales excepto en UNA cosa (el gancho o el CTA). Anotar el test en la hoja. No sacar conclusiones hasta tener al menos un día de datos, o dejar la regla escrita.", "prompt": "Antes de empezar el Día 20, necesito que me cuentes cómo te fue en el Día 19. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 20 — Un test A/B simple (solo una variable)\nResumen del objetivo: Publicar 2 vídeos que sean iguales excepto en UNA cosa (el gancho o el CTA). Anotar el test en la hoja. No sacar conclusiones hasta tener al menos un día de datos, o dejar la regla escrita.\n\nHoy es el Día 20: test A/B. Significa comparar dos versiones cambiando UNA sola variable para saber qué causa la diferencia.\n\nEXPLÍCAME POR QUÉ SI CAMBIAS GANCHO Y FONDO Y MÚSICA A LA VEZ, NO APRENDES NADA.\n\nELIGE UN SOLO TEST (yo confirmo):\n- Opción 1: mismo cuerpo, dos hooks distintos\n- Opción 2: mismo hook, dos CTAs (“link en bio” vs “comenta X y te lo digo”)\n- Opción 3: mismo guion, dos primeras imágenes\n\nREGLAS:\n- Mismo producto, misma hora aproximada, misma plataforma.\n- Títulos internos: TEST-A y TEST-B.\n- En la hoja, columna Notas: “variable = …”\n\nPRODUCE Y PUBLICA A y B hoy.\nEscribe la regla de lectura:\n- Qué número miraremos (vistas a 24 h, o guardados, o retención si existe).\n- No declararemos ganador en 20 minutos.\n- Si los números son casi iguales, no hay ganador: se queda el más fácil de producir.\n\nCIERRE:\nVariable, URLs A y B, regla de lectura, fecha en la que declararé ganador (Día 22 vale), texto para Notas del día."}, {"id": 21, "week": 3, "weekLabel": "Días 15-21 · Volumen y agentes", "title": "SOP: tu mini fábrica de contenido", "goal": "Escribir un procedimiento de una página: brief → guion → vídeo → revisión → publicar → tracking. Poner tiempos reales. Marcar el cuello de botella. Este SOP se usará en la semana 4.", "prompt": "Antes de empezar el Día 21, necesito que me cuentes cómo te fue en el Día 20. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 21 — SOP: tu mini fábrica de contenido\nResumen del objetivo: Escribir un procedimiento de una página: brief → guion → vídeo → revisión → publicar → tracking. Poner tiempos reales. Marcar el cuello de botella. Este SOP se usará en la semana 4.\n\nHoy es el Día 21: SOP. Un SOP es un procedimiento escrito para que yo (o un agente) no improvisemos. Como la receta de la cocina, no el plato gourmet.\n\nESCRIBE CONMIGO UN SOP DE 1 PÁGINA con:\n1. Entrada: brief + producto + enlace + aviso\n2. Guion (plantilla Día 18) — tiempo objetivo\n3. Producción (plantilla visual Día 15) — tiempo objetivo\n4. Revisión humana (checklist de 6 puntos)\n5. Publicar (plataforma, hashtags máximos, dónde va el enlace)\n6. Tracking (una fila)\n7. Si hay comentarios, regla de respuesta (24 h, sin pelear, sin diagnósticos médicos)\n\nUSA MIS TIEMPOS REALES de los Días 15-16. Si no los tengo, estímalos y márcalos como estimación.\n\nCUELLO DE BOTELLA:\nIdentifica el paso más lento. Propón UNA mejora para semana 4 (no cinco). Ejemplo: “dejar de elegir música” o “escribir guiones en lote los lunes”.\n\nPRUEBA EL SOP:\nHaz 1 vídeo hoy siguiendo el SOP al pie de la letra. Anota dónde te saliste del guion.\n\nCIERRE:\nSOP completo para Notas, cuello de botella, 1 URL de la prueba, texto para Notas del día. Recuérdame que semana 4 es optimizar y decidir, no montar un imperio."}, {"id": 22, "week": 4, "weekLabel": "Días 22-30 · Optimizar y decidir", "title": "Auditoría del mes (números honestos)", "goal": "Reunir totales: vídeos, vistas, clics, ventas, gasto y horas. Top 3 y bottom 3. Escribir qué se repetiría. Sin drama si hay 0 ventas: el sistema igual se evalúa.", "prompt": "Antes de empezar el Día 22, necesito que me cuentes cómo te fue en el Día 21. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 22 — Auditoría del mes (números honestos)\nResumen del objetivo: Reunir totales: vídeos, vistas, clics, ventas, gasto y horas. Top 3 y bottom 3. Escribir qué se repetiría. Sin drama si hay 0 ventas: el sistema igual se evalúa.\n\nHoy es el Día 22: auditoría. Auditar es mirar los números con calma, no premiarnos ni castigarnos.\n\nRELLENA CONMIGO ESTE INFORME (pregunta lo que falte de la hoja y de las notas):\n- Días trabajados vs 22\n- Vídeos publicados\n- Plataformas\n- Vistas totales (aprox.)\n- Mejor vídeo (URL + por qué)\n- Peor vídeo (URL + por qué)\n- Clics si existen\n- Ventas y comisión (0 es un dato válido)\n- Dinero gastado de los 500 y en qué\n- Horas semanales reales\n- Test A/B: ¿ya hay ganador?\n\nTOP 3 / BOTTOM 3:\nLista y extrae patrones (gancho, duración, demo vs charla, hora).\n\nLECTURA EMOCIONAL:\nSi hay 0 ventas, explica causas posibles REALISTAS: pocos clics, pocos vídeos, enlace pendiente, producto caro, nicho frío, o simplemente muestra pequeña. No uses “el algoritmo me odia” como única tesis.\n\nENTREGABLE:\nUn párrafo “Qué repetiría” y un párrafo “Qué no volvería a hacer”.\n\nCIERRE:\nInforme completo para Notas del día. Este informe alimenta los Días 23-29."}, {"id": 23, "week": 4, "weekLabel": "Días 22-30 · Optimizar y decidir", "title": "Duplicar a los ganadores", "goal": "Hacer 5 variaciones del mejor vídeo o del patrón ganador. Publicar al menos 3 hoy. Dejar 2 en cola. No inventar un nicho nuevo.", "prompt": "Antes de empezar el Día 23, necesito que me cuentes cómo te fue en el Día 22. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 23 — Duplicar a los ganadores\nResumen del objetivo: Hacer 5 variaciones del mejor vídeo o del patrón ganador. Publicar al menos 3 hoy. Dejar 2 en cola. No inventar un nicho nuevo.\n\nHoy es el Día 23: duplicar ganadores. Duplicar no es copiar el mismo vídeo. Es hacer hermanos: misma idea, distinto ejemplo, distinto hook de la misma familia.\n\nTOMA EL GANADOR DE LA AUDITORÍA (o el test A si ganó):\n1. Escribe qué tiene de especial en 4 viñetas.\n2. Genera 5 variaciones con la plantilla de guiones.\n3. Produce 3 hoy y deja 2 listos (nombres dia23-v1…v5).\n4. Publica los 3. Tracking.\n\nREGLA:\nSi “el ganador” apenas tuvo más vistas que el resto, igual duplica el MÁS FÁCIL de producir. En muestra pequeña, la facilidad también gana.\n\nNO:\n- No cambies de producto hoy.\n- No rediseñes el avatar entero.\n\nCIERRE:\n4 viñetas del patrón, 5 títulos, 3 URLs, 2 en cola, texto para Notas del día."}, {"id": 24, "week": 4, "weekLabel": "Días 22-30 · Optimizar y decidir", "title": "Cortar lo que no funciona", "goal": "Decidir qué formatos, ganchos o plataformas pausar. No borrar datos. Dejar por escrito una lista de ‘stop doing’. Liberar tiempo para los ganadores.", "prompt": "Antes de empezar el Día 24, necesito que me cuentes cómo te fue en el Día 23. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 24 — Cortar lo que no funciona\nResumen del objetivo: Decidir qué formatos, ganchos o plataformas pausar. No borrar datos. Dejar por escrito una lista de ‘stop doing’. Liberar tiempo para los ganadores.\n\nHoy es el Día 24: cortar. Cortar es dejar de hacer lo que consume tiempo y no enseña ni convierte. No es borrar el canal de rabia.\n\nCONMIGO, CLASIFICA:\n- SEGUIR: patrones ganadores\n- PAUSAR: cosas dudosas (segunda plataforma, intros largas, música, hashtags eternos)\n- PARAR: lo que falló 3+ veces o me odia hacer\n\nPLATAFORMAS:\nSi una red me comió horas y tiene ~0 tracción respecto a la otra, pausamos 14 días. No “cierro para siempre”.\n\nPRODUCTO:\nSi el producto no se entiende en vídeo, no lo promociono el resto del mes. Podemos usar el producto reserva del Día 4, pero pregúntame y confirma.\n\nDATOS:\nNo borres vídeos ni filas. Archiva: columna “estado = pausado”.\n\nENTREGABLE:\nLista STOP DOING de máximo 7 viñetas, y cuánto tiempo semanal eso libera (estimación).\n\nCIERRE:\nListas seguir/pausar/parar, decisión de plataforma y producto, texto para Notas del día."}, {"id": 25, "week": 4, "weekLabel": "Días 22-30 · Optimizar y decidir", "title": "Optimizar el camino al enlace de afiliado", "goal": "Revisar bio, primer comentario, vídeo fijado y aviso legal. Un solo camino claro al enlace. Comprobar que los enlaces funcionan en el móvil.", "prompt": "Antes de empezar el Día 25, necesito que me cuentes cómo te fue en el Día 24. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 25 — Optimizar el camino al enlace de afiliado\nResumen del objetivo: Revisar bio, primer comentario, vídeo fijado y aviso legal. Un solo camino claro al enlace. Comprobar que los enlaces funcionan en el móvil.\n\nHoy es el Día 25: funnel sencillo. Un funnel es el camino: ven el vídeo → entienden qué hacer → llegan al enlace → pueden comprar. Hoy no montamos una web de 12 páginas.\n\nREVISA CONMIGO, EN ORDEN:\n1. El CTA oral y el de texto: ¿dicen lo mismo? ¿Una sola instrucción?\n2. Bio: ¿cabe el enlace? ¿El aviso de afiliado está?\n3. Vídeo fijado: un vídeo que explica qué recomiendo y dónde está el link.\n4. Primer comentario: enlace si la red lo permite, o “link en bio”.\n5. Prueba real: abre el enlace en el móvil (ventana de incógnito si puedes) y confirma que llega al producto correcto y que es TU enlace.\n6. Si hay varios productos, 1 solo protagonista el resto de la semana.\n\nLEGAL / CONFIANZA:\n- Frase de aviso visible.\n- No “garantizado”.\n- Si alguien pregunta “¿te pagan por esto?”, enséñame una respuesta honesta de 2 frases.\n\nSI NO HUBO CLICS:\nEl problema puede ser el camino, no el producto. Simplifica el CTA a una frase de 6 palabras.\n\nCIERRE:\nCTA final, bio final, resultado de la prueba del enlace, vídeo fijado (URL), texto para Notas del día."}, {"id": 26, "week": 4, "weekLabel": "Días 22-30 · Optimizar y decidir", "title": "Mejora ligera con automatización o fórmulas (opcional programar)", "goal": "Ahorrar 20-40 minutos semanales con algo concreto: fórmulas en la hoja, plantillas, o un script muy simple SI tú quieres. Si no quieres programar, no se programa.", "prompt": "Antes de empezar el Día 26, necesito que me cuentes cómo te fue en el Día 25. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 26 — Mejora ligera con automatización o fórmulas (opcional programar)\nResumen del objetivo: Ahorrar 20-40 minutos semanales con algo concreto: fórmulas en la hoja, plantillas, o un script muy simple SI tú quieres. Si no quieres programar, no se programa.\n\nHoy es el Día 26: un atajo técnico pequeño. Objetivo: ahorrar tiempo repetitivo, no convertirme en ingeniero.\n\nPREGUNTA PRIMERO:\n¿Quiero (A) solo hoja de cálculo, (B) una automatización no-code gratis (si es simple), o (C) un mini script (Python o JS) para nombrar archivos / juntar guiones?\n\nOPCIÓN A (por defecto):\n- Fórmulas: total de vídeos, total de vistas, promedio, “top vídeo”.\n- Una pestaña RESUMEN que se actualiza sola.\n- Validación de datos: plataforma solo puede ser TikTok/Reels/Shorts.\n\nOPCIÓN B:\nSolo si A ya está. Un zap/make GRATIS solo si no pide tarjeta y se entiende en 20 min. Si no, se descarta.\n\nOPCIÓN C:\nSolo si yo lo pido. Entonces:\n- Explica cada línea como si no hubiera programado nunca.\n- Un solo archivo.\n- No pidas servidores, APIs de pago ni tokens raros salvo que yo ya los tenga.\n- Que resuelva UNA tarea (ejemplo: a partir de una lista de títulos, generar nombres diaXX-titulo).\n\nREGLA: si en 45 minutos no está útil, volvemos a la hoja y cerramos. El atajo no puede comerse el día.\n\nCIERRE:\nQué atajo quedó funcionando, cómo se usa en 3 pasos, texto para Notas del día (incluye fórmulas o el código, si lo hay)."}, {"id": 27, "week": 4, "weekLabel": "Días 22-30 · Optimizar y decidir", "title": "Agente de operaciones: informe semanal y fábrica", "goal": "Crear 2 prompts reutilizables: (1) informe semanal a partir de la hoja, (2) fábrica de 7 guiones respetando el SOP y las listas STOP DOING. Probar uno de los dos hoy.", "prompt": "Antes de empezar el Día 27, necesito que me cuentes cómo te fue en el Día 26. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 27 — Agente de operaciones: informe semanal y fábrica\nResumen del objetivo: Crear 2 prompts reutilizables: (1) informe semanal a partir de la hoja, (2) fábrica de 7 guiones respetando el SOP y las listas STOP DOING. Probar uno de los dos hoy.\n\nHoy es el Día 27: el agente como jefe de operaciones (pero yo sigo siendo el jefe de verdad).\n\nCREA DOS PROMPTS LARGOS, LISTOS PARA COPIAR:\n\nPROMPT 1 — INFORME SEMANAL\nDebe pedirme que pegue: filas de la hoja, gasto, horas, notas.\nDebe devolver: totales, top/bottom, hipótesis, 3 acciones de la semana siguiente, alertas (enlace roto, 0 publicaciones, promesas peligrosas).\n\nPROMPT 2 — FÁBRICA\nDebe incluir: brief Día 17, SOP Día 21, STOP DOING Día 24, patrón ganador Día 23.\nDebe devolver: 7 guiones + calendario de 7 días + lista de producción.\nDebe prohibir: inventar métricas, milagros, cambiar de nicho sin preguntar, publicar sin humano.\n\nPRUEBA HOY:\nEjecuta UNO de los dos con datos reales (aunque sean pocos). Critica el resultado CONMIGO: ¿alucinó? ¿fue genérico? Ajusta el prompt (versión V2).\n\nGUARDA ambos en Notas con nombres claros: AGENTE_INFORME_V2 y AGENTE_FABRICA_V2.\n\nCIERRE:\nLos dos prompts, qué alucinaciones corregimos, texto para Notas del día."}, {"id": 28, "week": 4, "weekLabel": "Días 22-30 · Optimizar y decidir", "title": "Caja: gasto, tiempo y ROI (aunque sea 0)", "goal": "Calcular dinero gastado, horas invertidas, comisiones y un ROI simple. Decidir si el mes 2 merece el mismo presupuesto, menos o casi nada hasta que haya clics.", "prompt": "Antes de empezar el Día 28, necesito que me cuentes cómo te fue en el Día 27. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 28 — Caja: gasto, tiempo y ROI (aunque sea 0)\nResumen del objetivo: Calcular dinero gastado, horas invertidas, comisiones y un ROI simple. Decidir si el mes 2 merece el mismo presupuesto, menos o casi nada hasta que haya clics.\n\nHoy es el Día 28: números de caja. ROI significa retorno de la inversión: qué volvió comparado con lo que salió. Si gané 0 y gasté 20, el ROI es negativo; igual podemos haber comprado APRENDIZAJE. Sepáralo.\n\nHAZ LAS CUENTAS CONMIGO, DESPACIO:\n1. Gasto total (herramientas, apps, stock, ads — ads no eran parte del plan; si gasté en ads, dímelo).\n2. Capital restante de 500.\n3. Horas totales estimadas (días trabajados × horas).\n4. Comisiones brutas.\n5. Resultado: comisiones − gasto.\n6. Coste por vídeo publicado (horas y dinero).\n7. Si hubo clics: comisión / clics. Si no hubo clics, no inventes.\n\nINTERPRETACIÓN HONESTA:\n- 0 ventas + 0 clics = aún no llegamos al producto. El cuello es atención o el camino del enlace.\n- 0 ventas + clics = el producto, el precio o la landing no convencen.\n- Ventas pequeñas = hay señal; el mes 2 es duplicar, no reinventar.\n\nDECISIÓN DE PRESUPUESTO MES 2 (borrador):\nPropón 3 techos: 0, 20-50 solo en la herramienta que sí usé, o mantener. Yo elijo.\n\nCIERRE:\nCuentas claras, interpretación, techo de gasto propuesto, texto para Notas del día. Nada de “en 90 días serás libre”."}, {"id": 29, "week": 4, "weekLabel": "Días 22-30 · Optimizar y decidir", "title": "Decisión del mes 2: duplicar, pivotar o simplificar", "goal": "Elegir UN camino: seguir el mismo nicho/producto, cambiar solo el producto, cambiar de plataforma, o simplificar a un sistema aún más pequeño. Criterios escritos. Sin decidir 4 cosas a la vez.", "prompt": "Antes de empezar el Día 29, necesito que me cuentes cómo te fue en el Día 28. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 29 — Decisión del mes 2: duplicar, pivotar o simplificar\nResumen del objetivo: Elegir UN camino: seguir el mismo nicho/producto, cambiar solo el producto, cambiar de plataforma, o simplificar a un sistema aún más pequeño. Criterios escritos. Sin decidir 4 cosas a la vez.\n\nHoy es el Día 29: una decisión. Pivotar significa cambiar de dirección con un motivo, no por aburrimiento.\n\nOPCIONES (explícalas y rellena un mini score conmigo 1-5):\nA) Duplicar: mismo nicho, mismo producto, más lote, mismos ganchos ganadores.\nB) Mismo nicho, producto reserva.\nC) Misma pieza, otra plataforma (solo si la principal está claramente muerta).\nD) Simplificar: 1 plataforma, 3 vídeos/semana, 0 herramientas de pago.\nE) Pausar 7 días (solo si hay agotamiento real).\n\nCRITERIOS:\n- ¿Puedo mostrar el producto?\n- ¿Hay enlace funcionando?\n- ¿Hay al menos un patrón de gancho que no odio producir?\n- ¿El nicho es seguro/legal para mí?\n- ¿Aguanto otros 30 días?\n\nREGLA: elige UNA letra. Escribe “Elegí X porque… Durante 14 días no cambio a otra letra salvo bloqueo.”\n\nPLAN DE RIESGOS:\nQué haré si 7 días del mes 2 van a 0 vistas otra vez (respuesta concreta, no “intentar más”).\n\nCIERRE:\nLetra elegida, frase de compromiso, plan de riesgo, texto para Notas del día. Mañana se convierte en calendario."}, {"id": 30, "week": 4, "weekLabel": "Días 22-30 · Optimizar y decidir", "title": "Plan del mes 2 y cierre de los 30 días", "goal": "Escribir el plan de las próximas 4 semanas, el ritual diario de 3 horas y cómo seguirás usando esta página con el agente. Celebrar lo que sí se construyó, aunque no haya ventas.", "prompt": "Antes de empezar el Día 30, necesito que me cuentes cómo te fue en el Día 29. Por favor responde estas preguntas:\n1. ¿Completaste las tareas del día anterior?\n2. ¿Qué problemas o dudas tuviste?\n3. ¿Qué aprendiste o qué notas importantes tomaste?\n4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\nCuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.\n\n---\n\nEres mi coach paciente de AI UGC (contenido generado con inteligencia artificial que parece hecho por un usuario real) y marketing de afiliados.\n\nSoy principiante absoluto. No des por hecho que sé nada: ni qué es un nicho, un avatar, un hook, un UTM, un CTR, una comisión, un funnel ni un agente. Cada vez que uses un término técnico, explícalo en una frase simple la primera vez.\n\nReglas de trabajo:\n- Habla en español, claro y directo.\n- Ve siempre paso a paso. Un paso a la vez.\n- Pregúntame y espera mi confirmación antes de pasar al siguiente paso.\n- Si algo puede hacerse gratis o barato, ofrécelo primero. Tengo unas 3 horas hoy y un capital máximo de unos 500 (pregúntame si son euros o dólares y cuánto me queda).\n- No me pidas comprar un curso, un mentor ni herramientas caras.\n- Si me atasco, simplifica. Nunca me hagas sentir tonto.\n- Al final de la sesión, dame: (1) un resumen de lo que hicimos, (2) una checklist de “hecho / no hecho”, (3) exactamente qué debo pegar en las Notas del día de mi página del plan.\n\nDÍA 30 — Plan del mes 2 y cierre de los 30 días\nResumen del objetivo: Escribir el plan de las próximas 4 semanas, el ritual diario de 3 horas y cómo seguirás usando esta página con el agente. Celebrar lo que sí se construyó, aunque no haya ventas.\n\nHoy es el Día 30: cierre y mes 2. Objetivo: un plan escrito de 4 semanas + un ritual diario. No es un rebranding.\n\nPRIMERO, INVENTARIO DE ACTIVOS (lo que YA existe):\nCuentas, brief, SOP, plantillas de agente, hoja, look, lote, ganadores, enlaces. Hazme la lista para que vea que no empiezo de cero.\n\nLUEGO, PLAN MES 2 (4 semanas), alineado a la letra del Día 29:\n- Semana 1: …\n- Semana 2: …\n- Semana 3: …\n- Semana 4: (otra auditoría)\nCada semana: nº de vídeos, 1 mejora sola, 0-1 experimento.\n\nRITUAL DIARIO DE 3 H (ajústalo a mi cuello de botella):\nEjemplo: 20 min guion / 90 min producir / 20 min publicar+tracking / 20 min comentarios / 30 min buffer. Si ya tengo lote, cambia.\n\nCÓMO SEGUIR CON EL AGENTE:\n- Seguir copiando el prompt del día… aunque el mes 2 no esté en esta página: usa el Prompt Maestro + brief + SOP + “antes de empezar, dime cómo fue ayer” con las 4 preguntas de siempre.\n- Pegar números reales. No dejar que el agente invente.\n\nCELEBRACIÓN SERIA:\nLista 10 cosas que yo no sabía hacer el Día 1 y ahora sí. Aunque no haya ventas, el sistema es el activo.\n\nCIERRE:\nPlan 4 semanas, ritual diario, lista de 10 aprendizajes, texto final para Notas del día 30. Termina preguntándome si quiero que convirtamos el mes 2 en otros 30 prompts diarios."}]</script>
+  <script type="application/json" id="master-data">"Eres mi coach paciente de AI UGC (contenido de usuario generado con inteligencia artificial) y marketing de afiliados. Soy principiante absoluto.\n\nCÓMO VAMOS A TRABAJAR CON MI PÁGINA “Plan 30 Días AI UGC”:\n1. Yo abro la página HTML del plan.\n2. Cada día expandiré el día correspondiente, pulsaré “Copiar Prompt del Día” y te lo pegaré aquí.\n3. Tú ejecutas ESE prompt. No te saltes pasos ni asumas que ya sé cosas.\n4. Los Días 2 al 30 empiezan pidiéndome cómo me fue el día anterior. Es obligatorio. No sigas con la lección hasta que yo responda (aunque sea “no lo terminé”).\n5. Cuando acabemos la sesión, me darás un bloque listo para pegar en “Notas del día” de la página (enlaces, usuarios, decisiones, bloqueos). Las notas se guardan solas en mi navegador.\n6. Yo marcaré el día como completado solo si hice lo esencial.\n\nREGLAS:\n- Español, claro, un paso cada vez, confirma antes de avanzar.\n- ~3 horas al día y un techo de ~500 de capital. Prioriza gratis.\n- No prometas ingresos. No me vendas cursos.\n- No inventes que completé tareas ni inventes métricas.\n- Recuérdame el aviso de afiliado cuando publiquemos.\n- Si me atasco, reduce el alcance del día, no lo cargues de herramientas nuevas.\n\nAhora pregunta: ¿en qué día del plan estamos y qué hay en mis notas de ayer? Cuando te lo diga, espera a que te pegue el prompt de ese día o empieza el Día 1 si aún no he empezado."</script>
+  <script>
+    const DAYS = JSON.parse(document.getElementById("days-data").textContent);
+    const MASTER_TEXT = JSON.parse(document.getElementById("master-data").textContent)
+      .replace(
+        "2. Cada día expandiré el día correspondiente, pulsaré “Copiar Prompt del Día” y te lo pegaré aquí.",
+        "2. Cada día hay DOS copias: “mismo agente” (seguimos este chat, sin recap) y “agente nuevo” (otro chat, con notas inyectadas para no perder el avance cuando se acabe la memoria)."
+      )
+      .replace(
+        "4. Los Días 2 al 30 empiezan pidiéndome cómo me fue el día anterior. Es obligatorio. No sigas con la lección hasta que yo responda (aunque sea “no lo terminé”).",
+        "4. Si el prompt dice MODO: MISMO AGENTE, no pidas recap ni te presentes otra vez. Si dice MODO: AGENTE NUEVO, usa las notas inyectadas como recap real y solo pregunta lo que falte."
+      )
+      .replace(
+        "Ahora pregunta: ¿en qué día del plan estamos y qué hay en mis notas de ayer? Cuando te lo diga, espera a que te pegue el prompt de ese día o empieza el Día 1 si aún no he empezado.",
+        "Ahora pregunta: ¿en qué día estamos y si este chat es nuevo o seguimos el de ayer? Espera a que te pegue el prompt del día (mismo agente o agente nuevo)."
+      );
+
+    const notesKey = (id) => "notas-dia-" + id;
+    const doneKey = (id) => "completado-dia-" + id;
+
+    const daysRoot = document.getElementById("days");
+    const toastEl = document.getElementById("toast");
+    let toastTimer = null;
+    let filterWeek = "all";
+
+    const checkSvg = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6.2L4.7 9L10 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const chevSvg = '<svg class="chev" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const brainSvg = '<svg class="brain" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 6.2c-2.3-2.5-7.1-2.2-9.4.8-1.8 2.4-1.6 5.8.6 8-2.3 1.1-3.5 3.6-2.6 5.8.8 2.1 3.2 3.3 5.5 2.7 1 .9 2.3 1.5 3.7 1.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 6.2c2.5-2.2 7.2-1.6 9.2 1.8 1.7 2.8 1.1 6.5-1.4 8.4 2.4.8 3.8 3.4 3 5.7-.8 2.3-3.4 3.5-5.8 2.7-1.1.9-2.5 1.5-4.1 1.5" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 6.6v18.6" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><path d="M9.1 9.6c1.6.6 2.3 1.8 2.1 3.3M7.4 13.6c1.8.5 2.7 1.7 2.5 3.2M9.4 18.2c1.4.6 2.1 1.6 1.9 2.8" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M22.8 10.1c-1.6.7-2.2 2-2 3.3M24.4 14.6c-1.8.6-2.6 1.8-2.3 3.3M22.4 18.6c-1.4.6-2 1.6-1.8 2.8" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    function pad(n) {
+      return String(n).padStart(2, "0");
+    }
+
+    function getNotes(id) {
+      return (localStorage.getItem(notesKey(id)) || "").trim();
+    }
+
+    function hasNotes(id) {
+      return getNotes(id).length > 0;
+    }
+
+    function setBrainState(brain, on, id) {
+      brain.classList.toggle("has-memory", on);
+      const wrap = brain.closest(".brain-wrap");
+      const label = on
+        ? "Hay notas de memoria en el día " + id
+        : "Sin notas de memoria en el día " + id;
+      if (wrap) {
+        wrap.title = label;
+        wrap.setAttribute("aria-label", label);
+      }
+    }
+
+    function dayBody(prompt) {
+      const marker = "Eres mi coach paciente de AI UGC";
+      const i = prompt.indexOf(marker);
+      return i >= 0 ? prompt.slice(i) : prompt;
+    }
+
+    function dayWork(day) {
+      const body = dayBody(day.prompt);
+      const markers = ["DÍA " + day.id + " —", "DÍA " + day.id + " -", "Hoy es el Día " + day.id];
+      let cut = -1;
+      for (let m = 0; m < markers.length; m++) {
+        const i = body.indexOf(markers[m]);
+        if (i >= 0 && (cut < 0 || i < cut)) cut = i;
+      }
+      return cut >= 0 ? body.slice(cut) : body;
+    }
+
+    function buildSameAgentPrompt(day) {
+      return dayWork(day);
+    }
+
+    function buildNewAgentPrompt(day) {
+      const body = dayBody(day.prompt);
+      const header = [
+        "MODO: AGENTE NUEVO / CHAT NUEVO",
+        "El chat anterior se quedó corto de memoria (tokens/contexto). Este prompt reconstruye el avance con las notas de mi página.",
+        "Trátame como principiante absoluto igual que antes. No inventes lo que no esté en las notas.",
+        ""
+      ].join("\n");
+
+      if (day.id === 1) return header + "\n" + body;
+
+      const prev = day.id - 1;
+      const prevMeta = DAYS.find((d) => d.id === prev);
+      const prevNotes = getNotes(prev);
+      const prevTitle = prevMeta ? " — " + prevMeta.title : "";
+
+      let memory = "MEMORIA INYECTADA AUTOMÁTICAMENTE DESDE MI PÁGINA DEL PLAN\n";
+      memory += "No me pidas que te cuente otra vez cómo me fue en el Día " + prev + ": esas notas ya están aquí. Úsalas para darme instrucciones precisas y no contradigas estos datos. Si un dato falta o es ambiguo, entonces sí pregunta.\n\n";
+      memory += "--- NOTAS DEL DÍA " + prev + prevTitle + " ---\n";
+
+      if (prevNotes) {
+        memory += prevNotes;
+      } else {
+        memory += "(No hay notas guardadas del Día " + prev + ". Antes de empezar el Día " + day.id + ", necesito que me cuentes cómo te fue en el Día " + prev + ". Por favor responde estas preguntas:\n";
+        memory += "1. ¿Completaste las tareas del día anterior?\n";
+        memory += "2. ¿Qué problemas o dudas tuviste?\n";
+        memory += "3. ¿Qué aprendiste o qué notas importantes tomaste?\n";
+        memory += "4. Pega aquí cualquier dato, link, resultado o captura relevante.\n\n";
+        memory += "Cuando me respondas, usaré esa información para darte instrucciones mucho más precisas y evitar suposiciones.)";
+      }
+
+      const earlier = [];
+      for (let i = 1; i < prev; i++) {
+        const n = getNotes(i);
+        if (!n) continue;
+        const meta = DAYS.find((d) => d.id === i);
+        earlier.push("### Día " + i + (meta ? " — " + meta.title : "") + "\n" + n);
+      }
+      if (earlier.length) {
+        memory += "\n\n--- MEMORIA DE DÍAS ANTERIORES (1 a " + (prev - 1) + ") ---\n" + earlier.join("\n\n");
+      }
+
+      return header + "\n" + memory + "\n\n---\n\n" + body;
+    }
+
+    function bindCopyButton(btn, idleLabel, makeText, doneMsg) {
+      btn.addEventListener("click", async () => {
+        const ok = await copyText(makeText());
+        btn.textContent = ok ? "Prompt copiado" : "No se pudo copiar";
+        toast(ok ? doneMsg() : "Copia manual: selecciona el texto");
+        setTimeout(() => { btn.textContent = idleLabel; }, 1600);
+      });
+    }
+
+    function toast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove("show"), 1800);
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (err) {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.left = "-9999px";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        return ok;
+      }
+    }
+
+    function isDone(id) {
+      return localStorage.getItem(doneKey(id)) === "1";
+    }
+
+    function setDone(id, value) {
+      if (value) localStorage.setItem(doneKey(id), "1");
+      else localStorage.removeItem(doneKey(id));
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const n = DAYS.filter((d) => isDone(d.id)).length;
+      const pct = Math.round((n / 30) * 100);
+      document.getElementById("topProgress").textContent = n + " / 30";
+      document.getElementById("progressLabel").textContent = n + " de 30 días completados";
+      document.getElementById("progressPct").textContent = pct + "%";
+      document.getElementById("progressBar").style.width = pct + "%";
+    }
+
+    function render() {
+      daysRoot.innerHTML = "";
+      let lastWeek = null;
+      DAYS.forEach((day) => {
+        if (filterWeek !== "all" && String(day.week) !== filterWeek) return;
+        if (day.week !== lastWeek) {
+          const lab = document.createElement("div");
+          lab.className = "week-label";
+          lab.textContent = day.weekLabel;
+          daysRoot.appendChild(lab);
+          lastWeek = day.week;
+        }
+
+        const details = document.createElement("details");
+        details.className = "day";
+        details.dataset.id = String(day.id);
+
+        const summary = document.createElement("summary");
+        const done = isDone(day.id);
+
+        const check = document.createElement("button");
+        check.type = "button";
+        check.className = "check";
+        check.setAttribute("aria-pressed", done ? "true" : "false");
+        check.setAttribute("aria-label", done ? "Desmarcar día " + day.id : "Marcar día " + day.id + " como completado");
+        check.innerHTML = checkSvg;
+        check.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const next = check.getAttribute("aria-pressed") !== "true";
+          check.setAttribute("aria-pressed", next ? "true" : "false");
+          check.setAttribute("aria-label", next ? "Desmarcar día " + day.id : "Marcar día " + day.id + " como completado");
+          setDone(day.id, next);
+        });
+
+        const title = document.createElement("div");
+        title.className = "day-title";
+        title.innerHTML = '<span class="day-num">DÍA ' + pad(day.id) + "</span>" + escapeHtml(day.title);
+
+        summary.appendChild(check);
+
+        const brainWrap = document.createElement("span");
+        brainWrap.className = "brain-wrap";
+        brainWrap.setAttribute("role", "img");
+        brainWrap.innerHTML = brainSvg;
+        const brain = brainWrap.querySelector(".brain");
+        setBrainState(brain, hasNotes(day.id), day.id);
+        summary.appendChild(brainWrap);
+
+        summary.appendChild(title);
+        summary.insertAdjacentHTML("beforeend", chevSvg);
+
+        const panel = document.createElement("div");
+        panel.className = "panel";
+
+        const goal = document.createElement("p");
+        goal.className = "goal";
+        goal.textContent = day.goal;
+
+        const copyStack = document.createElement("div");
+        copyStack.className = "copy-stack";
+
+        const sameWrap = document.createElement("div");
+        sameWrap.className = "copy-option";
+        const sameBtn = document.createElement("button");
+        sameBtn.type = "button";
+        sameBtn.className = "btn btn-lime";
+        sameBtn.textContent = "Copiar para el mismo agente";
+        const sameHint = document.createElement("p");
+        sameHint.className = "copy-hint";
+        sameHint.textContent = "Sigue en este chat. Sin recap ni notas previas: ya están en el contexto.";
+        sameWrap.appendChild(sameBtn);
+        sameWrap.appendChild(sameHint);
+        bindCopyButton(
+          sameBtn,
+          "Copiar para el mismo agente",
+          () => buildSameAgentPrompt(day),
+          () => "Día " + day.id + " · mismo agente"
+        );
+
+        const newWrap = document.createElement("div");
+        newWrap.className = "copy-option";
+        const newBtn = document.createElement("button");
+        newBtn.type = "button";
+        newBtn.className = "btn btn-ghost btn-tall";
+        newBtn.textContent = "Copiar para un agente nuevo";
+        const newHint = document.createElement("p");
+        newHint.className = "copy-hint";
+        newHint.textContent = "Otro chat. Inyecta las notas para no perder el avance cuando se acabe la memoria.";
+        newWrap.appendChild(newBtn);
+        newWrap.appendChild(newHint);
+        bindCopyButton(
+          newBtn,
+          "Copiar para un agente nuevo",
+          () => buildNewAgentPrompt(day),
+          () => {
+            const injected = day.id > 1 && hasNotes(day.id - 1);
+            return injected
+              ? "Día " + day.id + " · agente nuevo (con notas del " + (day.id - 1) + ")"
+              : "Día " + day.id + " · agente nuevo";
+          }
+        );
+
+        copyStack.appendChild(sameWrap);
+        copyStack.appendChild(newWrap);
+
+        const notesHead = document.createElement("div");
+        notesHead.className = "notes-label";
+        notesHead.innerHTML = "<span>Notas del día</span><small>Se guardan solas</small>";
+
+        const ta = document.createElement("textarea");
+        ta.setAttribute("aria-label", "Notas del día " + day.id);
+        ta.placeholder = "Enlaces, usuarios (sin contraseñas), decisiones, bloqueos, lo que te pida el agente al cerrar…";
+        ta.value = localStorage.getItem(notesKey(day.id)) || "";
+        let saveTimer = null;
+        ta.addEventListener("input", () => {
+          setBrainState(brain, ta.value.trim().length > 0, day.id);
+          clearTimeout(saveTimer);
+          saveTimer = setTimeout(() => {
+            const v = ta.value;
+            if (v.trim()) localStorage.setItem(notesKey(day.id), v);
+            else localStorage.removeItem(notesKey(day.id));
+          }, 200);
+        });
+
+        const clearWrap = document.createElement("div");
+        clearWrap.className = "notes-actions";
+        const clearBtn = document.createElement("button");
+        clearBtn.type = "button";
+        clearBtn.className = "btn btn-muted";
+        clearBtn.textContent = "Limpiar notas de este día";
+        clearBtn.addEventListener("click", () => {
+          ta.value = "";
+          localStorage.removeItem(notesKey(day.id));
+          setBrainState(brain, false, day.id);
+          toast("Notas del día " + day.id + " eliminadas");
+        });
+        clearWrap.appendChild(clearBtn);
+
+        panel.appendChild(goal);
+        panel.appendChild(copyStack);
+        panel.appendChild(notesHead);
+        panel.appendChild(ta);
+        panel.appendChild(clearWrap);
+
+        details.appendChild(summary);
+        details.appendChild(panel);
+        daysRoot.appendChild(details);
+      });
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[c]));
+    }
+
+    document.getElementById("copyMaster").addEventListener("click", async () => {
+      const ok = await copyText(MASTER_TEXT);
+      toast(ok ? "Prompt maestro copiado" : "No se pudo copiar");
+    });
+
+    function collectBackup() {
+      const notas = {};
+      const completados = [];
+      for (let i = 1; i <= 30; i++) {
+        const n = localStorage.getItem(notesKey(i));
+        if (n) notas[String(i)] = n;
+        if (isDone(i)) completados.push(i);
+      }
+      return {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        notas: notas,
+        completados: completados
+      };
+    }
+
+    function applyBackup(data) {
+      if (!data || typeof data !== "object") throw new Error("archivo no válido");
+      const notas = data.notas || {};
+      const completados = Array.isArray(data.completados) ? data.completados : [];
+      for (let i = 1; i <= 30; i++) {
+        localStorage.removeItem(notesKey(i));
+        localStorage.removeItem(doneKey(i));
+        const n = notas[String(i)];
+        if (typeof n === "string" && n.trim()) localStorage.setItem(notesKey(i), n);
+        if (completados.indexOf(i) !== -1) localStorage.setItem(doneKey(i), "1");
+      }
+    }
+
+    document.getElementById("exportData").addEventListener("click", async () => {
+      const json = JSON.stringify(collectBackup(), null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "plan-30-dias-ai-ugc-notas.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      const copied = await copyText(json);
+      toast(copied ? "Backup descargado y copiado" : "Backup descargado");
+    });
+
+    document.getElementById("importData").addEventListener("click", () => {
+      document.getElementById("importFile").click();
+    });
+
+    document.getElementById("importFile").addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          applyBackup(JSON.parse(String(reader.result || "{}")));
+          updateProgress();
+          render();
+          toast("Notas importadas");
+        } catch (err) {
+          toast("No se pudo importar ese archivo");
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.querySelectorAll(".filter").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterWeek = btn.dataset.week;
+        document.querySelectorAll(".filter").forEach((b) => {
+          b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+        });
+        render();
+      });
+    });
+
+    updateProgress();
+    render();
+  </script>
+</body>
+</html>
