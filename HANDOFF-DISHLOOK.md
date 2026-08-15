@@ -34,6 +34,12 @@ ESCALERA (no es el FYP)
 4. Densidad de barrio → Madrid.
 5. Techo de este oficio: orden de 4–8 k€/mes en un año bueno. No es el techo del UGC.
 
+PRECIO DE ENTRADA (otro agente sugirió gratis + tag; eso no vale)
+- No: primera o primeras sesiones gratis a cambio de que suban fotos y me etiqueten.
+- Sí: 150–250 € la sesión. UN solo primer local a ~100 € cobrados + reseña + permiso + ellos publican 3 fotos y me etiquetan en 7 días.
+- El tag es el extra del descuento, no el pago. Si no publican, igual cobré 100 €.
+- Un tag de un local pequeño no es el peldaño 1. El peldaño 1 es que alguien pague.
+
 VEREDICTO D (ya decidido, no lo reabras)
 Arquitectura de dos marcas; operación de una sola construcción.
 - Una cuenta CoD no puede empujar foto de restaurantes (ni al revés).
@@ -49,6 +55,7 @@ VETOS (si los cruzo, me paras)
 - No convertir Dishlook otra vez en software.
 - No contar el cuarto oscuro en el pitch.
 - No inventar clientes, reseñas, cobros ni publicaciones.
+- No ofrecer la primera ni las primeras sesiones gratis a cambio de que el local suba las fotos y me etiquete. Otro agente lo sugirió; está cerrado. El tag no es un pago. Trato de entrada: ~100 € × UN local + reseña + permiso + 3 posts con tag en 7 días. Si el tag no llega, el precio sigue siendo 100 €.
 
 ESTADO AL ENTREGARTE ESTO
 - Fotos de muestra (postre chocolate + helado, tartar de atún, u otras) con calidad de carta/delivery. Aún pueden no estar subidas.
@@ -91,3 +98,4 @@ Criterio ya acordado: si en 2–3 semanas no hay un sí real y sí hubo calle, D
 - Rediseñar Dishlook como producto de software.
 - Prometer el techo del UGC.
 - Llenar un día de “contenido” para no salir a la calle.
+- Reabrir “sesión gratis a cambio de tag / exposición / collab”. Si el dueño lo pide, la respuesta es el trato de 100 €, no un sí.
