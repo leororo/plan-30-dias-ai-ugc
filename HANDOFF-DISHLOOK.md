@@ -7,6 +7,7 @@ Herramienta diaria (misma mecánica que el plan de 30 días, contenido filtrado)
 - Archivo: `plan-30-dias-dishlook.html`
 - Cuando esté en GitHub Pages: `https://leororo.github.io/plan-30-dias-ai-ugc/plan-30-dias-dishlook.html`
 - El plan UGC sigue en `index.html` / `plan-30-dias-ai-ugc.html`. No lo mezcles. Las notas de esta página usan otras claves de `localStorage` y no pisan las del UGC.
+- Encuadre Glovo/Uber y prompt de revelado (para el agente que toca el lab): `BRIEFING-REVELADO-DELIVERY.md`
 
 ---
 
