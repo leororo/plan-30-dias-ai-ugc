@@ -34,7 +34,15 @@ ESCALERA (no es el FYP)
 4. Densidad de barrio → Madrid.
 5. Techo de este oficio: orden de 4–8 k€/mes en un año bueno. No es el techo del UGC.
 
-PRECIO DE ENTRADA (otro agente sugirió gratis + tag; eso no vale)
+PORTFOLIO PARA LA BARRA (el otro agente quería sesiones gratis para tener “trabajos de otro local”)
+El hueco es real: un dueño puede preguntar “¿esto lo has hecho en otro sitio?”. La solución no es regalar 2–3 sesiones.
+- Hoy el book son las muestras (postre, tartar, etc.): enseñan el LOOK de carta/Glovo. Un local de delivery mira el plato, no una lista de clientes.
+- Si preguntan de qué restaurante es: “estudio / pruebas; el look es este. El primer local con nombre en la web eres tú.” Cero nombres inventados.
+- El portfolio CON NOMBRE sale de UN trabajo real (trato de 100 € + permiso). A partir de ahí, esa foto va la primera en el móvil.
+- Un amigo o un sitio donde ya pides cena puede ser ese primer nombre, con el mismo trato. No se ofrece en frío como “gratis para el book”.
+- No hace falta un book de 5 locales para salir a la calle el Día 7.
+
+PRECIO DE ENTRADA (gratis + tag no vale)
 - No: primera o primeras sesiones gratis a cambio de que suban fotos y me etiqueten.
 - Sí: 150–250 € la sesión. UN solo primer local a ~100 € cobrados + reseña + permiso + ellos publican 3 fotos y me etiquetan en 7 días.
 - El tag es el extra del descuento, no el pago. Si no publican, igual cobré 100 €.
@@ -98,4 +106,4 @@ Criterio ya acordado: si en 2–3 semanas no hay un sí real y sí hubo calle, D
 - Rediseñar Dishlook como producto de software.
 - Prometer el techo del UGC.
 - Llenar un día de “contenido” para no salir a la calle.
-- Reabrir “sesión gratis a cambio de tag / exposición / collab”. Si el dueño lo pide, la respuesta es el trato de 100 €, no un sí.
+- Reabrir “sesión gratis a cambio de tag / exposición / collab / para tener portfolio”. Si preguntan por otros locales, se enseña el móvil y la frase honesta. Si piden gratis, la respuesta es el trato de 100 €.
